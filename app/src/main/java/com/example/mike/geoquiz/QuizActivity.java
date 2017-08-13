@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,7 +14,8 @@ public class QuizActivity extends AppCompatActivity {
 
     private Button mTrueButton;
     private Button mFalseButton;
-    private Button mNextButton;             // next question btn
+    private ImageButton mNextButton;             // next question btn
+    private ImageButton mPreviousButton;         // previous question btn
     private TextView mQuestionTextView;     // holds the question text
     private int mCurrentIndex = 0;
 
@@ -30,7 +32,10 @@ public class QuizActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_quiz);
 
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
@@ -39,11 +44,12 @@ public class QuizActivity extends AppCompatActivity {
         // set the text based on the ID
         mQuestionTextView.setText(question);
 
-        mNextButton = (Button) findViewById(R.id.next_button);
+        mNextButton = (ImageButton) findViewById(R.id.next_button);
+        mPreviousButton = (ImageButton) findViewById(R.id.previous_button);
 
         mTrueButton = (Button) findViewById(R.id.true_button);
         mFalseButton = (Button) findViewById(R.id.false_button);
-        mNextButton = (Button) findViewById((R.id.next_button));
+
         mQuestionTextView = (TextView) findViewById((R.id.question_text_view)) ;
 
 
@@ -59,6 +65,16 @@ public class QuizActivity extends AppCompatActivity {
                 t.show();
                 */
             }
+        });
+
+        // listener for question text
+        mQuestionTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCurrentIndex = (mCurrentIndex+1) % mQuestionBank.length;
+                updateQuestion();
+            }
+
         });
 
         mFalseButton.setOnClickListener(new View.OnClickListener() {
@@ -80,9 +96,19 @@ public class QuizActivity extends AppCompatActivity {
         mNextButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                mCurrentIndex = (mCurrentIndex+1) % mQuestionBank.length;
+                getNextQuestionIndex(1);
+                //mCurrentIndex = (mCurrentIndex+1) % mQuestionBank.length;
                 updateQuestion();
 
+            }
+        });
+
+        // listner for previous button
+        mPreviousButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                getNextQuestionIndex(-1);
+                updateQuestion();
             }
         });
 
@@ -106,6 +132,12 @@ public class QuizActivity extends AppCompatActivity {
         }
 
         Toast.makeText(this,messageResId,Toast.LENGTH_SHORT).show();
+    }
+
+    private void getNextQuestionIndex(int val) {
+        // if previous button exceeds lower bounds, go back to last question
+        mCurrentIndex = (mCurrentIndex+val <0)?mQuestionBank.length-1:(mCurrentIndex+val) % mQuestionBank.length;
+
     }
 
 }
