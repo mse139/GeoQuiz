@@ -114,7 +114,7 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getNextQuestionIndex(1);
-                mCurrentIndex = (mCurrentIndex+1) % mQuestionBank.length;
+                //mCurrentIndex = (mCurrentIndex+1) % mQuestionBank.length;
                 updateQuestion();
 
             }
