@@ -134,6 +134,7 @@ public class QuizActivity extends AppCompatActivity {
 
     // updates the question text
     private void updateQuestion() {
+       // Log.d(TAG,"Updating question text.", new Exception());
         int question = mQuestionBank[mCurrentIndex].getTextResId();
         // set the text
         mQuestionTextView.setText(question);
@@ -159,6 +160,7 @@ public class QuizActivity extends AppCompatActivity {
             double correctPct = 100*(numCorrect / (double)(mQuestionBank.length));
             String msg = "You answered " + correctPct + "% of the questions correctly!";
             Toast.makeText(this,msg,Toast.LENGTH_LONG).show();
+            numCorrect = 0; // reset the counter
         }
     }
 
