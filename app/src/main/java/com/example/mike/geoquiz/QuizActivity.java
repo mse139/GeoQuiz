@@ -114,7 +114,7 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getNextQuestionIndex(1);
-                //mCurrentIndex = (mCurrentIndex+1) % mQuestionBank.length;
+                mCurrentIndex = (mCurrentIndex+1) % mQuestionBank.length;
                 updateQuestion();
 
             }
@@ -134,7 +134,7 @@ public class QuizActivity extends AppCompatActivity {
 
     // updates the question text
     private void updateQuestion() {
-       // Log.d(TAG,"Updating question text.", new Exception());
+        //Log.d(TAG,"Updating question text.", new Exception());
         int question = mQuestionBank[mCurrentIndex].getTextResId();
         // set the text
         mQuestionTextView.setText(question);
