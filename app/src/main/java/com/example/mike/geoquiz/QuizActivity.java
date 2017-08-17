@@ -22,6 +22,7 @@ public class QuizActivity extends AppCompatActivity {
     private TextView mQuestionTextView;     // holds the question text
     private int mCurrentIndex = 0;
     private static final String KEY_INDEX = "index";
+    private static final String KEY_CHEATER = "cheater";
 
     private static final String TAG = "QuizActivity";
     private int numCorrect;
@@ -50,6 +51,7 @@ public class QuizActivity extends AppCompatActivity {
 
         if(savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX,0);
+            mIsCheater = savedInstanceState.getInt(KEY_CHEATER,0) == 1 ? true: false;
         }
 
         setContentView(R.layout.activity_quiz);
@@ -120,6 +122,12 @@ public class QuizActivity extends AppCompatActivity {
             public void onClick(View v) {
                 getNextQuestionIndex(1);
                 mIsCheater = false;
+                if(mCurrentIndex >= mQuestionBank.length-1) {
+                    mNextButton.setEnabled(false);
+                    if (mCurrentIndex == mQuestionBank.length-1) // last question
+                        updateQuestion();
+                }
+                   else
                 //mCurrentIndex = (mCurrentIndex+1) % mQuestionBank.length;
                 updateQuestion();
 
@@ -191,7 +199,14 @@ public class QuizActivity extends AppCompatActivity {
     private void getNextQuestionIndex(int val) {
         // if previous button exceeds lower bounds, go back to last question
 
-        mCurrentIndex = (mCurrentIndex+val <0)?mQuestionBank.length-1:(mCurrentIndex+val) % mQuestionBank.length;
+        if(mCurrentIndex + val < 0)
+            mCurrentIndex = mQuestionBank.length-1;
+        else if (mCurrentIndex + val > mQuestionBank.length-1)
+            mCurrentIndex = mQuestionBank.length-1;
+        else
+            mCurrentIndex += val;
+
+        //mCurrentIndex = (mCurrentIndex+val <0)?mQuestionBank.length-1:(mCurrentIndex+val) % mQuestionBank.length;
 
     }
 
@@ -224,6 +239,7 @@ public class QuizActivity extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
         Log.i(TAG,"onSaveInstanceState");
         savedInstanceState.putInt(KEY_INDEX,mCurrentIndex);
+        savedInstanceState.putInt(KEY_CHEATER, (mIsCheater) ? 1 : 0);
     }
     @Override
     protected void onActivityResult(int requestCode,int resultCode, Intent data) {
