@@ -26,6 +26,7 @@ public class CheatActivity extends AppCompatActivity {
     private boolean isAnswerShown;
     private static final String TAG = "CheatActivity";
     private static final String CHEATER_KEY = "cheater";
+    private TextView mAPITextView;
 
 
     @Override
@@ -38,6 +39,11 @@ public class CheatActivity extends AppCompatActivity {
 
         mAnswerTextView = (TextView) findViewById(R.id.answer_text_view);
         mShowAnswerButton = (Button) findViewById(R.id.show_answer_button);
+
+        mAPITextView = (TextView) findViewById(R.id.version_text_view);
+
+        mAPITextView.setText("API Level " + Integer.toString(Build.VERSION.SDK_INT));
+
         // restore the cheating flag
         if(savedInstanceState != null ) {
             Log.d(TAG,"restoring saved instance");
